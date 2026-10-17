@@ -15,19 +15,20 @@ export interface Point {
 }
 
 // мир -> экран (чтобы нарисовать объект)
-export function worldToScreen(worldX: number, worldY: number, offsetX = 0): Point {
+export const worldToScreen = (worldX: number, worldY: number, offsetX = 0): Point => {
   return {
     x: (worldX - worldY) * ISO_X_RATIO + offsetX,
     y: (worldX + worldY) * ISO_Y_RATIO,
   };
-}
+};
 
 // экран -> мир (чтобы понять, куда игрок кликнул на самом деле)
-export function screenToWorld(screenX: number, screenY: number, offsetX = 0): Point {
+export const screenToWorld = (screenX: number, screenY: number, offsetX = 0): Point => {
   const diff = (screenX - offsetX) / ISO_X_RATIO; // worldX - worldY
   const sum = screenY / ISO_Y_RATIO; // worldX + worldY
+
   return {
     x: (sum + diff) / 2,
     y: (sum - diff) / 2,
   };
-}
+};

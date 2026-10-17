@@ -1,7 +1,7 @@
 <template>
   <div
-    class="cell"
-    :class="{ 'cell--dark': (cell.x + cell.y) % 2 === 0 }"
+    class="game-cell"
+    :class="{ 'game-cell--dark': (cell.x + cell.y) % 2 === 0 }"
     :style="style"
   ></div>
 </template>
@@ -37,15 +37,15 @@ const style = computed(() => {
 });
 </script>
 
-<style scoped>
-.cell {
+<style scoped lang="scss">
+.game-cell {
   position: absolute;
   /* ромб через clip-path: элемент не поворачивается, только обрезается */
   clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   background: #1f3a2f;
-}
 
-.cell--dark {
-  background: #1a3228;
+  &--dark {
+    background: #1a3228;
+  }
 }
 </style>

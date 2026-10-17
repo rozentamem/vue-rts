@@ -3,20 +3,24 @@
     class="game-object"
     :style="rootStyle"
     @mousedown.left.stop
-    @click.left.stop="$emit('select', obj)"
+    @click.left.stop="() => $emit('select', obj)"
   >
     <!-- Персонаж: круг + тень на земле -->
     <template v-if="obj.type === 'character'">
-      <div class="shadow" :class="{ 'shadow--selected': isSelected }" :style="shadowStyle"></div>
-      <div class="body" :style="bodyStyle"></div>
+      <div
+        class="game-object__shadow"
+        :class="{ 'game-object__shadow--selected': isSelected }"
+        :style="shadowStyle"
+      ></div>
+      <div class="game-object__body" :style="bodyStyle"></div>
     </template>
 
     <!-- Здание: блок из трёх граней (верх, левая, правая) -->
     <template v-else>
-      <div class="building" :style="buildingStyle">
-        <div class="face" :style="faceTop"></div>
-        <div class="face" :style="faceLeft"></div>
-        <div class="face" :style="faceRight"></div>
+      <div class="game-object__building" :style="buildingStyle">
+        <div class="game-object__face" :style="faceTop"></div>
+        <div class="game-object__face" :style="faceLeft"></div>
+        <div class="game-object__face" :style="faceRight"></div>
       </div>
     </template>
   </div>
@@ -79,13 +83,13 @@ const buildingStyle = computed(() => {
   };
 });
 
-function face(points: string, brightness: number) {
+const face = (points: string, brightness: number) => {
   return {
     clipPath: `polygon(${points})`,
     backgroundColor: props.obj.color,
     filter: `brightness(${brightness})`,
   };
-}
+};
 
 const faceTop = computed(() => {
   const w = props.cellSize;
@@ -105,39 +109,39 @@ const faceRight = computed(() => {
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .game-object {
   position: absolute;
   width: 0;
   height: 0;
   cursor: pointer;
-}
 
-.body {
-  position: absolute;
-  border-radius: 50%;
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.35);
-}
+  &__body {
+    position: absolute;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.35);
+  }
 
-.shadow {
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.4);
-  box-sizing: border-box;
-}
+  &__shadow {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.4);
+    box-sizing: border-box;
 
-/* выбранный юнит: жёлтое кольцо на земле */
-.shadow--selected {
-  border: 3px solid #fde047;
-  background: rgba(253, 224, 71, 0.18);
-}
+    /* выбранный юнит: жёлтое кольцо на земле */
+    &--selected {
+      border: 3px solid #fde047;
+      background: rgba(253, 224, 71, 0.18);
+    }
+  }
 
-.building {
-  position: absolute;
-}
+  &__building {
+    position: absolute;
+  }
 
-.face {
-  position: absolute;
-  inset: 0;
+  &__face {
+    position: absolute;
+    inset: 0;
+  }
 }
 </style>
